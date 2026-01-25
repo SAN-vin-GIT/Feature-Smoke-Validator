@@ -1,0 +1,9 @@
+id: dashboard
+module: core
+priority: high
+
+steps:
+  - goto: 
+
+assertions:
+  - url_contains: /reseller

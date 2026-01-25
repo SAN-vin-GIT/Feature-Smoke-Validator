@@ -1,0 +1,9 @@
+id: example-smoke
+module: example
+priority: low
+
+steps:
+  - goto: /
+
+assertions:
+  - url_contains: /reseller

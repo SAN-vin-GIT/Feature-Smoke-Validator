@@ -1,0 +1,26 @@
+{
+  "name": "feature-smoke-validator",
+  "version": "1.0.0",
+  "description": "Fast smoke tests for feature break detection",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SAN-vin-GIT/Feature-Smoke-Validator.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/SAN-vin-GIT/Feature-Smoke-Validator/issues"
+  },
+  "homepage": "https://github.com/SAN-vin-GIT/Feature-Smoke-Validator#readme",
+  "devDependencies": {
+    "@testing-library/cypress": "^10.1.0",
+    "cypress": "^15.9.0",
+    "js-yaml": "^4.1.1"
+  }
+}

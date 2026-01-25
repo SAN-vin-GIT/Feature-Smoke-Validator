@@ -1,0 +1,9 @@
+id: orders-create
+module: orders
+priority: high
+
+steps:
+  - goto: /orders/create
+
+assertions:
+  - visible: "Create Order"

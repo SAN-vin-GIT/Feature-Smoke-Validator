@@ -1,0 +1,17 @@
+# FEATURE SMOKE TEST TEMPLATE
+# RULES:
+# - Max 5 steps
+# - Max 2 assertions
+# - Shallow checks only
+# - No business logic
+# - Delete if flaky
+
+id: <feature-name>
+module: <module-name>
+priority: high | medium | low
+
+steps:
+  - goto: <path>
+
+assertions:
+  - visible: <text-or-selector>

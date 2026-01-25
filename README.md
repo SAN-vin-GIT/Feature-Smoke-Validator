@@ -1,2 +1,312 @@
-# Feature-Smoke-Validator
-Fast smoke tests for feature break detection
+# 🧪 Feature Smoke Validator
+
+A **YAML-driven smoke testing framework** built with Cypress to validate that critical features of a fast-moving product are **reachable, rendered, and not fundamentally broken** — without falling into brittle, high-maintenance automation.
+
+This project exists to increase confidence in rapid releases, and provide **high-signal, low-maintenance smoke coverage** across a large, evolving system.
+
+---
+
+## 🧠 Why This Project Exists
+
+Our product:
+
+* Ships **new features weekly**
+* Has **36+ modules** and **100+ features** (growing)
+* Changes UI and flows frequently
+* Lacks complete API / feature documentation
+
+Traditional UI automation became:
+
+* Repetitive
+* Brittle
+* Time-consuming to update
+* Low-trust (frequent false failures)
+
+Manual testing became:
+
+* Heavy
+* Stressful
+* Unsustainable at scale
+
+👉 **Feature Smoke Validator** was created to solve this exact pain.
+
+---
+
+## 🎯 What This Project Is (and Is Not)
+
+### ✅ What it IS
+
+* A **feature availability validator**
+* A **release confidence safety net**
+* A **low-maintenance smoke layer**
+* A **system-level health check**
+
+### ❌ What it is NOT
+
+* A full end-to-end automation suite
+* A business-logic validator
+* A replacement for API tests
+* A replacement for exploratory testing
+
+---
+
+## 🧩 Core Idea
+
+> **If a feature is deployed but cannot be reached or rendered, it is broken — regardless of business logic correctness.**
+
+This framework answers one primary question:
+
+> **“Can a real user reach this feature and see its core structure?”**
+
+Nothing more. Nothing less.
+
+---
+
+## 🔑 Key Mental Shifts (Critical)
+
+### 1️⃣ Availability > Correctness
+
+Smoke tests validate **availability**, not correctness.
+
+* ❌ Do NOT validate full workflows
+* ❌ Do NOT submit complex forms
+* ❌ Do NOT depend on valid business data
+
+If a test requires valid business data → **it is not a smoke test**.
+
+---
+
+### 2️⃣ Render Tests ≠ Workflow Tests
+
+Complex pages (orders, payments, invoices) are **render-only smoke tests**.
+
+Example:
+
+* ✅ Page loads
+* ✅ Sections render
+* ✅ Actions are visible
+* ❌ No form filling
+* ❌ No submissions
+
+---
+
+### 3️⃣ Deep Links Are Valid Smoke Entry Points
+
+Smoke tests may use **direct URLs** (deep links) instead of navigating menus.
+
+Why:
+
+* Sidebars are customizable
+* Menus are searchable and flexible
+* Navigation is UX, not feature logic
+
+> **Smoke tests validate features — not menus.**
+
+---
+
+### 4️⃣ If a Smoke Test Becomes Painful, It’s Wrong
+
+Smoke tests should be:
+
+* Shallow
+* Boring
+* Predictable
+* Easy to update
+
+If a test:
+
+* Needs retries
+* Needs conditional logic
+* Needs waits
+* Breaks weekly
+
+👉 It does not belong in smoke.
+
+---
+
+## 🏗️ Architecture Overview
+
+### Tech Stack
+
+* **Cypress** (UI execution)
+* **YAML** (declarative test definition)
+* **Node (via Cypress config)** for scenario discovery
+
+---
+
+### Folder Structure
+
+```
+cypress/
+├── smoke/
+│   ├── modules/          # YAML feature definitions
+│   └── runner/           # Cypress runner that executes YAML
+├── support/              # Cypress support files
+├── e2e/                  # Traditional Cypress tests (optional)
+└── cypress.config.js
+```
+
+---
+
+## 📄 YAML-Driven Smoke Tests
+
+Each feature is defined as a **single YAML file**.
+
+### Example: Create Order
+
+```yaml
+id: orders-create
+module: orders
+priority: high
+
+steps:
+  - goto: /orders/create
+
+assertions:
+  - visible: "Create new order manually"
+  - visible: "Customer Information"
+  - visible: "Shipping Address"
+  - visible: "Order Items"
+  - url_contains: /orders/create
+```
+
+---
+
+## 🧪 Supported Capabilities (Updates Coming)
+
+### Steps
+
+| Step         | Purpose                                      |
+| ------------ | -------------------------------------------- |
+| `goto`       | Navigate to a page (deep link supported)     |
+| `click`      | Click via stable selector (prefer `data-cy`) |
+| `click_role` | Click using accessible role + name           |
+
+### Assertions
+
+| Assertion      | Purpose                           |
+| -------------- | --------------------------------- |
+| `visible`      | Confirm UI section or text exists |
+| `exist`        | Confirm element exists in DOM     |
+| `url_contains` | Confirm correct routing           |
+
+---
+
+## 🔐 Authentication Strategy
+
+* Login is executed **once per test suite** (`before()` hook)
+* All smoke tests run as an authenticated user
+* Credentials are stored via Cypress env variables
+
+---
+
+## 🧠 Why One Test per YAML
+
+Each YAML file becomes **one Cypress test (`it`)**.
+
+Benefits:
+
+* Clear reporting
+* Isolated failures
+* CI visibility
+* Scales cleanly to 100+ features
+
+---
+
+## 🚦 Priority Field (Future-Ready)
+
+Each feature includes a `priority` field:
+
+```yaml
+priority: high | medium | low
+```
+
+Currently:
+
+* Acts as **metadata only**
+
+Future potential:
+
+* Fail CI only on high priority
+* Selective smoke execution
+* Risk-based release decisions
+
+> Priority should affect **interpretation**, not test logic.
+
+---
+
+## 🛑 Explicit Non-Goals
+
+This project intentionally does **NOT** include:
+
+* Form filling
+* Business validation
+* Order submission
+* Data creation
+* Conditional logic
+* Flaky retries
+
+Those belong in:
+
+* Full Cypress tests
+* API tests
+* Manual exploratory testing
+
+---
+
+## 🧭 When to Add a Smoke Test
+
+Add a smoke test when:
+
+* A feature is user-facing
+* A route should exist
+* A page should render
+* A deployment could break access
+
+Do NOT add a smoke test when:
+
+* Feature requires heavy setup
+* Logic is deeply stateful
+* Validation rules are complex
+
+---
+
+## 🪜 Current State
+
+✅ YAML-driven smoke tests
+✅ One test per feature
+✅ Login once
+✅ Deep link support
+✅ Accessible selector support
+✅ Stable, low-maintenance architecture
+
+---
+
+## 🚀 Future Goals (Optional)
+
+* Priority-based CI behavior
+* Selective execution
+* Smoke result summaries
+* Feature coverage tracking
+
+Only added **when needed**, never pre-emptively.
+
+---
+
+## 🧠 Final Thought
+
+> **Smoke tests are not meant to prove the system works.
+> They are meant to prove the system is not obviously broken.**
+
+This project exists to protect **engineer time**, **QA sanity**, and **release confidence** — not to replace deeper testing layers.
+
+---
+
+Built with the explicit goal of reducing burnout and increasing signal 
+
+## TL;DR
+
+This project provides fast, low-maintenance smoke validation to ensure
+critical features are reachable and rendered after deployment.
+It intentionally avoids full workflows to reduce flakiness and burnout.
+
