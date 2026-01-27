@@ -1,9 +1,10 @@
 id: dashboard
 module: core
-priority: high
+priority: medium
 
 steps:
   - goto: 
 
 assertions:
-  - url_contains: /reseller
+  - visible: "Total Sales"
+

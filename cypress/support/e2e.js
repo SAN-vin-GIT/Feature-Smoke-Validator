@@ -6,3 +6,7 @@ import '@testing-library/cypress/add-commands'
 Cypress.on('uncaught:exception', (err, runnable) => {
     return false
 })
+
+Cypress.on('uncaught:exception', () => {
+    return false;
+});

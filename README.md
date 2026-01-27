@@ -233,6 +233,23 @@ Future potential:
 
 > Priority should affect **interpretation**, not test logic.
 
+🔴 High priority 
+    -Test fails hard
+    -Cypress run fails
+    -CI fails
+    -Clear error message
+    -Deployment should be blocked
+
+🟡 Medium / Low priority
+    -Assertion fails internally
+    -Warning logged:
+    -SMOKE WARNING: Non-blocking medium priority smoke failed
+    -Test marked as passed
+    -Cypress run continues
+    -CI passes
+    -Issue is visible but non-blocking
+
+
 ---
 
 ## 🛑 Explicit Non-Goals

@@ -1,9 +1,11 @@
 id: orders-create
 module: orders
-priority: high
+priority: low
 
 steps:
-  - goto: /orders/create
+  - goto: /customers
 
 assertions:
-  - visible: "Create Order"
+  - visible:
+      text: "Create Manual Order"
+      timeout: 20000

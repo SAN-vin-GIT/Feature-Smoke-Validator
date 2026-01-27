@@ -1,9 +1,10 @@
 id: example-smoke
 module: example
-priority: low
+priority: high
 
 steps:
-  - goto: /
+  - click: 'this clicks'
 
 assertions:
-  - url_contains: /reseller
+  - visible: "this checks in screen"
+
