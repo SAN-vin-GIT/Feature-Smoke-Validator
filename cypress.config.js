@@ -23,12 +23,12 @@ module.exports = defineConfig({
         "cypress/smoke/modules"
       );
 
-      // ✅ discover YAML scenarios
+      //  discover YAML scenarios
       const yamlFiles = fs
         .readdirSync(smokeDir)
         .filter(file => file.endsWith(".yaml"));
 
-      // ✅ parse priority, sort high → medium → low, inject into Cypress.env
+      //  parse priority, sort high → medium → low, inject into Cypress.env
       const priorityOrder = { high: 0, medium: 1, low: 2 };
       const smokeScenarios = yamlFiles
         .map(file => {
@@ -46,7 +46,7 @@ module.exports = defineConfig({
 
       config.env.SMOKE_SCENARIOS = smokeScenarios;
 
-      // ✅ Node-side YAML loader task
+      //  Node-side YAML loader task
       on("task", {
         loadYaml(filePath) {
           return fs.readFileSync(
