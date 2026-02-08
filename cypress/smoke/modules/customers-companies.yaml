@@ -1,0 +1,19 @@
+# FEATURE SMOKE TEST
+# RULES:
+# - Max 5 steps
+# - Max 2 assertions
+# - Shallow checks only
+# - No business logic
+# - Delete if flaky
+
+id: customers-companies
+module: customers
+priority: high
+
+steps:
+  - click: '[data-cy="button-sidebar-customers"]'
+  - click: '[data-cy="sidebar-popover-customers-item-companies"]'
+
+assertions:
+  - visible: Companies
+  - url_contains: /customer-organizations

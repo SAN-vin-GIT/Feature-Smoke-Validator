@@ -1,4 +1,6 @@
 import yaml from 'js-yaml';
+import { executeStep } from '../dsl/steps.js';
+import { executeAssertion } from '../dsl/assertions.js';
 
 const scenarios = Cypress.env('SMOKE_SCENARIOS') || [];
 
@@ -32,50 +34,15 @@ describe('Feature Smoke Validator', () => {
                 const priority = scenario?.priority || 'medium';
                 ctx.priority = priority;
 
-                // steps
+                // Execute steps using handler registry
                 scenario.steps?.forEach(step => {
-                    if (step.goto) { cy.visit(step.goto, { timeout: 60000 }); }
-                    if (step.click) { cy.get(step.click, { timeout: 60000 }).click(); }
-                    if (step.sidebar) { cy.get('[data-cy="button-sidebar-toggle"]', { timeout: 20000 }).click({ force: true }); }
-
-
+                    executeStep(step);
                 });
 
-                // assertions
+                // Execute assertions using handler registry
                 scenario.assertions?.forEach(assertion => {
-
-                    // ---------- visible ----------
-                    if (assertion.visible) {
-                        const text =
-                            typeof assertion.visible === 'string'
-                                ? assertion.visible
-                                : assertion.visible.text;
-
-                        const timeout =
-                            typeof assertion.visible === 'object'
-                                ? assertion.visible.timeout || 20000
-                                : 20000;
-
-                        cy.contains(text, { timeout }).should('be.visible');
-                    }
-
-                    // ---------- url_contains ----------
-                    if (assertion.url_contains) {
-                        const value =
-                            typeof assertion.url_contains === 'string'
-                                ? assertion.url_contains
-                                : assertion.url_contains.value;
-
-                        const timeout =
-                            typeof assertion.url_contains === 'object'
-                                ? assertion.url_contains.timeout || 30000
-                                : 30000;
-
-                        cy.url({ timeout }).should('include', value);
-                    }
-
+                    executeAssertion(assertion);
                 });
-
             });
         });
     });

@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { defineConfig } = require("cypress");
 const fs = require("fs");
 const path = require("path");
@@ -5,11 +6,13 @@ const yaml = require("js-yaml");
 
 module.exports = defineConfig({
   e2e: {
-    baseUrl: "YOUR URL",
+    baseUrl: process.env.CYPRESS_BASE_URL,
+    viewportWidth: 1920,
+    viewportHeight: 1080,
 
     env: {
-      USERNAME: "YOUR USERNAME",
-      PASSWORD: "YOUR PASSWORD"
+      USERNAME: process.env.CYPRESS_USERNAME,
+      PASSWORD: process.env.CYPRESS_PASSWORD
     },
 
     specPattern: [

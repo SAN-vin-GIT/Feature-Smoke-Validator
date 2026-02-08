@@ -134,17 +134,34 @@ If a test:
 
 ---
 
-### Folder Structure
-
-```
-cypress/
+### cypress/
 ├── smoke/
+│   ├── dsl/              # DSL Implementation (steps.js, assertions.js)
 │   ├── modules/          # YAML feature definitions
-│   └── runner/           # Cypress runner that executes YAML
+│   └── runner/           # Cypress runner (smokeRunner.cy.js)
 ├── support/              # Cypress support files
-├── e2e/                  # Traditional Cypress tests (optional)
-└── cypress.config.js
+└── cypress.config.js     # Orchestration & Env config
 ```
+
+---
+
+## 🚀 Getting Started
+
+1. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+
+2. **Setup environment variables**:
+   Copy `.env.example` to `.env` and fill in your credentials.
+   ```bash
+   cp .env.example .env
+   ```
+
+3. **Run smoke tests**:
+   ```bash
+   npx cypress run --spec "cypress/smoke/runner/smokeRunner.cy.js"
+   ```
 
 ---
 
@@ -176,19 +193,25 @@ assertions:
 
 ### Steps
 
-| Step         | Purpose                                      |
-| ------------ | -------------------------------------------- |
-| `goto`       | Navigate to a page (deep link supported)     |
-| `click`      | Click via stable selector (prefer `data-cy`) |
-| `click_role` | Click using accessible role + name           |
+| Step               | Purpose                                      |
+| ------------------ | -------------------------------------------- |
+| `goto`             | Navigate to a page (deep link supported)     |
+| `click`            | Click via stable selector (prefer `data-cy`) |
+| `sidebar`          | Toggle the sidebar manually                  |
+| `wait_for`         | Wait for an element to exist (30s)           |
+| `type`             | Type text into an input field                |
+| `open_module`      | Semantic shorthand for sidebar navigation    |
+| `scroll_to`        | Scroll an element into view                  |
+| `click_if_visible` | Click only if element exists (non-blocking)  |
 
 ### Assertions
 
-| Assertion      | Purpose                           |
-| -------------- | --------------------------------- |
-| `visible`      | Confirm UI section or text exists |
-| `exist`        | Confirm element exists in DOM     |
-| `url_contains` | Confirm correct routing           |
+| Assertion      | Purpose                               |
+| -------------- | ------------------------------------- |
+| `visible`      | Confirm UI section or text is visible |
+| `url_contains` | Confirm correct routing               |
+| `contains_text`| Confirm element contains specific text |
+| `exist`        | Confirm element exists in DOM (hidden or visible) |
 
 ---
 
@@ -196,7 +219,8 @@ assertions:
 
 * Login is executed **once per test suite** (`before()` hook)
 * All smoke tests run as an authenticated user
-* Credentials are stored via Cypress env variables
+* Credentials are managed via `.env` file (loaded via `dotenv`)
+* Use `CYPRESS_USERNAME` and `CYPRESS_PASSWORD` in your local `.env`
 
 ---
 
