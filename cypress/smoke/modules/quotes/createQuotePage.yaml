@@ -1,0 +1,11 @@
+id: Quote Builder
+module: quotes
+priority: high
+steps:
+    - click: '[data-cy="button-sidebar-quotes"]'
+    - click: '[data-cy="sidebar-popover-quotes-item-builder"]'
+    - click: '[data-cy="create-quote-button"]'
+
+assertions:
+  - visible: Create a new quote
+  - visible: Create a new quote by filling out the form below.

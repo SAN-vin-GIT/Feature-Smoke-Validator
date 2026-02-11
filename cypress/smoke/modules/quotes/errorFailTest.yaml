@@ -1,0 +1,10 @@
+id: fail
+module: test fail
+priority: high
+
+steps:
+    - click: '[data-cy="button-sidebar-quotes"]'
+
+
+assertions:
+  - visible: This is a test fail
