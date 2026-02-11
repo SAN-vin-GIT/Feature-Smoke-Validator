@@ -224,6 +224,45 @@ assertions:
 
 ---
 
+## 📊 Error Logging & Analysis
+
+Every test failure is **automatically logged** to `cypress/smoke/logs/error_logs.json` (git-ignored) with comprehensive context:
+
+```json
+{
+  "timestamp": "2026-02-11T09:26:15.916Z",
+  "scenarioFile": "quotes/createQuotePage.yaml",
+  "module": "quotes",
+  "priority": "high",
+  "errorName": "AssertionError",
+  "message": "Expected to find content: 'Create Quote' but never did.",
+  "failingStep": "assertion[1]: visible",
+  "url": "captured in afterEach",
+  "stackTrace": [
+    "AssertionError: Expected to find content...",
+    "at visible (cypress/smoke/dsl/assertions.js:11:39)",
+    "at executeAssertion (...)"
+  ]
+}
+```
+
+**Use error logs to**:
+- Identify flaky tests by failure frequency
+- Track which modules fail most often
+- Prioritize fixes based on error patterns
+- Debug failures with exact step and stack trace
+
+**Example analysis** (using `jq`):
+```bash
+# Count failures by module
+jq 'group_by(.module) | map({module: .[0].module, count: length})' cypress/smoke/logs/error_logs.json
+
+# Find most common errors
+jq 'group_by(.errorName) | map({error: .[0].errorName, count: length})' cypress/smoke/logs/error_logs.json
+```
+
+---
+
 ## 🧠 Why One Test per YAML
 
 Each YAML file becomes **one Cypress test (`it`)**.
